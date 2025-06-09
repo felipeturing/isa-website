@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feliz 4 meses, Isabel y Walter - Ofuscado</title>
+    <style>
+      /* ...existing code... */
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .container {
+        text-align: center;
+        color: #fff;
+        margin: 20px;
+        animation: fadeIn 2s ease-out;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        color: #333;
+        animation: slideIn 1s ease-out;
+      }
+
+      h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .heart {
+        top: 20px;
+        /* transform: translateX(-50%) rotate(-45deg); */
+        z-index: 10;
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        background-color: #ff6f91;
+        animation: beat 1s infinite;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        width: 100px;
+        height: 100px;
+        background-color: #ff6f91;
+        border-radius: 50%;
+        position: absolute;
+      }
+
+      .heart::before {
+        top: -50px;
+        left: 0;
+      }
+
+      .heart::after {
+        left: 50px;
+        top: 0;
+      }
+
+      .heart-rain {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .heart-rain .rain-heart {
+        width: 20px;
+        height: 20px;
+        background-color: #ff6f91;
+        transform: rotate(-45deg);
+        position: absolute;
+        animation: fall 5s linear infinite;
+      }
+
+      /* Corazones en las cuatro esquinas */
+      .corner-heart {
+        position: fixed;
+        width: 40px;
+        height: 40px;
+        background-color: #ff6f91;
+        transform: rotate(-45deg);
+      }
+      .corner-heart::before,
+      .corner-heart::after {
+        content: "";
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: #ff6f91;
+        border-radius: 50%;
+      }
+      .corner-heart::before {
+        top: -20px;
+        left: 0;
+      }
+      .corner-heart::after {
+        left: 20px;
+        top: 0;
+      }
+      .corner-heart.top-left {
+        top: 20px;
+        left: 20px;
+      }
+      .corner-heart.top-right {
+        top: 20px;
+        right: 20px;
+      }
+      .corner-heart.bottom-left {
+        bottom: 20px;
+        left: 20px;
+      }
+      .corner-heart.bottom-right {
+        bottom: 20px;
+        right: 20px;
+      }
+
+      /* Diseño de flores en la parte inferior */
+      .flowers {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px;
+        background: rgba(255, 240, 245, 0.6);
+      }
+      .flowers span {
+        font-size: 2rem;
+        animation: sway 3s ease-in-out infinite;
+      }
+      @keyframes sway {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes beat {
+        0%,
+        100% {
+          transform: scale(1) rotate(-45deg);
+        }
+        50% {
+          transform: scale(1.2) rotate(-45deg);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fall {
+        to {
+          transform: translateY(100vh) rotate(-45deg);
+          opacity: 0;
+        }
+      }
+
+      /* Ocultar elementos */
+      .hidden {
+        display: none;
+      }
+
+      /* Carta cerrada antes de abrir */
+      .card-closed {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        cursor: pointer;
+        animation: fadeIn 1s ease-out;
+        z-index: 20;
+      }
+      .card-closed h2 {
+        margin: 0;
+        font-size: large;
+        color: #ff6f91;
+      }
+      .card-closed p {
+        margin-top: 10px;
+        font-size: medium;
+        color: #333;
+      }
+
+      /* Animación de apertura de carta */
+      @keyframes openCard {
+        to {
+          transform: translate(-50%, -50%) scale(0);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-closed">
+      <h2>Isabel y Walter</h2>
+      <p>Haz clic para abrir la carta</p>
+    </div>
+    <div class="container hidden">
+      <div class="heart"></div>
+      <h1 style="font-size: xx-large">¡Feliz 4 meses, mi amor!</h1>
+      <div class="card">
+        <p>
+          Gracias a Dios por darme la oportunidad de seguir estando a tu lado.
+        </p>
+        <p>Te mereces al mejor hombre y en eso me quiero convertir.</p>
+        <p>En tus ojos descubro mi paz, en tu sonrisa mi luz,</p>
+        <p>Eres la razón de mi ser, mi esperanza y mi felicidad.</p>
+        <p>Mi princesa Isabel.</p>
+      </div>
+      <!-- Corazones en las cuatro esquinas -->
+      <div class="corner-heart top-left"></div>
+      <div class="corner-heart top-right"></div>
+      <div class="corner-heart bottom-left"></div>
+      <div class="corner-heart bottom-right"></div>
+      <!-- Flores en la parte inferior -->
+      <div class="flowers">
+        <span>🌹</span><span>🌹</span><span>🌹</span><span>🌹</span
+        ><span>🌹</span>
+      </div>
+    </div>
+    <div class="heart-rain"></div>
+    <script>
+      // Animación de confeti
+      const container = document.querySelector(".container");
+
+      function createConfetti() {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.backgroundColor = `hsl(${
+          Math.random() * 360
+        }, 100%, 75%)`;
+        container.appendChild(confetti);
+
+        setTimeout(() => {
+          confetti.remove();
+        }, 3000);
+      }
+
+      setInterval(createConfetti, 150);
+
+      // Lluvia de corazones
+      const heartRainContainer = document.querySelector(".heart-rain");
+      function createRainHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("rain-heart");
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
+        heartRainContainer.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }
+      setInterval(createRainHeart, 200);
+
+      // Abrir carta
+      const cardClosed = document.querySelector(".card-closed");
+      const containerEl = document.querySelector(".container");
+      cardClosed.addEventListener("click", () => {
+        cardClosed.style.animation = "openCard 0.5s forwards";
+        setTimeout(() => {
+          cardClosed.remove();
+          containerEl.classList.remove("hidden");
+        }, 500);
+      });
+    </script>
+  </body>
+</html>
